@@ -1,2 +1,2 @@
-# -software-engineering-components
+# software-engineering-components
 Repository for university labs
