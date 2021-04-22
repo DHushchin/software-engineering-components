@@ -37,21 +37,30 @@ namespace KPI_Lab
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedReader = librarian.readers.Find(x => x.Name + " " + x.Surname == listBox1.SelectedItem.ToString());
-
-            listBox2.Items.Clear();
-
-            foreach (var item in SelectedReader.books)
+            try
             {
-                listBox2.Items.Add(item.Title);
-            }
+                button3.Enabled = false;
+                
+                SelectedReader = librarian.readers.Find(x => x.Name + " " + x.Surname == listBox1.SelectedItem.ToString());
 
-            textBox2.Text = SelectedReader.Name;
-            textBox3.Text = SelectedReader.Surname;
-            textBox4.Text = SelectedReader.DateOfBirth;
-            textBox5.Text = SelectedReader.Login;
-            textBox6.Text = SelectedReader.fine.ToString();
-            textBox7.Text = "********";
+                listBox2.Items.Clear();
+
+                foreach (var item in SelectedReader.books)
+                {
+                    listBox2.Items.Add(item.Title);
+                }
+
+                textBox2.Text = SelectedReader.Name;
+                textBox3.Text = SelectedReader.Surname;
+                textBox4.Text = SelectedReader.DateOfBirth;
+                textBox5.Text = SelectedReader.Login;
+                textBox6.Text = SelectedReader.fine.ToString();
+                textBox7.Text = "********";
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error!");
+            }
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -63,26 +72,34 @@ namespace KPI_Lab
             textBox6.Text = "";
             textBox7.Text = "";
             textBox6.Enabled = false;
+            button3.Enabled = true;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             try
             {
-                Reader reader = new Reader(textBox2.Text, textBox3.Text, textBox4.Text, textBox5.Text, textBox7.Text);
-                textBox6.Enabled = true;
+                if (textBox2.Text == "" || textBox3.Text == "" || textBox4.Text == "" || textBox5.Text == "" || textBox7.Text == "")
+                {
+                    MessageBox.Show("Some field is empty");
+                }
+                else
+                {
+                    Reader reader = new Reader(textBox2.Text, textBox3.Text, textBox4.Text, textBox5.Text, textBox7.Text);
+                    textBox6.Enabled = true;
 
-                textBox2.Text = "";
-                textBox3.Text = "";
-                textBox4.Text = "";
-                textBox5.Text = "";
-                textBox6.Text = "";
-                textBox7.Text = "";
+                    textBox2.Text = "";
+                    textBox3.Text = "";
+                    textBox4.Text = "";
+                    textBox5.Text = "";
+                    textBox6.Text = "";
+                    textBox7.Text = "";
 
-                listBox1.Items.Add(reader.Name + " " + reader.Surname);
+                    listBox1.Items.Add(reader.Name + " " + reader.Surname);
 
-                librarian.readers.Add(reader);
-                librarian.SaveReadersChangesInFile("readers.txt");
+                    librarian.readers.Add(reader);
+                    librarian.SaveReadersChangesInFile("readers.txt");
+                }
             }
             catch (Exception)
             {
